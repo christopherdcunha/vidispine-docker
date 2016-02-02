@@ -1,0 +1,14 @@
+# Vidispine 4.5 tests
+FROM ubuntu:14.04
+
+RUN apt-get update && apt-get install -y -qq curl
+
+RUN curl http://repo.vidispine.com/apt/pub.gpg | sudo apt-key add -
+RUN echo "deb [arch=amd64] http://repo.vidispine.com/apt trusty/unstable 4.5" > /etc/apt/sources.list.d/vidispine.list
+
+RUN apt-get update && apt-get install -y -qq vidispine-server vidispine-solr transcoder
+
+RUN rm /etc/vidispine/License.lic
+ADD vidispine-license.lic /etc/vidispine/slaveAuth.lic
+RUN chown vidispine: /etc/vidispine/slaveAuth.lic
+ADD vidispine-init.sh /root/.bashrc
